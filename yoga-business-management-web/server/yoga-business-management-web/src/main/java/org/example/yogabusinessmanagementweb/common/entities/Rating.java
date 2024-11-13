@@ -1,28 +1,24 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.Date;
 
-@Entity
-@Table(name = "Rating")
+@Document(collection = "ratings") // Chỉ định collection MongoDB
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class Rating extends AbstractEntity<Long> implements Serializable {
-    @Column(name = "rate_point")
+public class Rating extends AbstractEntity<String> implements Serializable { // Chuyển ID thành String
+
+    @Field("rate_point") // Đặt tên trường MongoDB
     int ratePoint;
 
-    @Column(name = "content")
+    @Field("content") // Đặt tên trường MongoDB
     String content;
-
 }

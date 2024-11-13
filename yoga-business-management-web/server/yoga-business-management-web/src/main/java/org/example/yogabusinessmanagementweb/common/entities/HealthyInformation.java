@@ -1,46 +1,34 @@
 package org.example.yogabusinessmanagementweb.common.entities;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.yogabusinessmanagementweb.common.Enum.EHealthyGoal;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "HealthyInformation")
+@Document(collection = "healthy_informations")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class HealthyInformation extends AbstractEntity<Long>  implements Serializable {
+public class HealthyInformation extends AbstractEntity<String> implements Serializable { // ID chuyển sang String cho MongoDB
 
-    @Column(name = "healthy_goal")
-    @Enumerated(EnumType.STRING) // Store enum as a string in the database
-    EHealthyGoal healthyGoal;
-    @Column(name = "age")
+    EHealthyGoal healthyGoal; // Enum sẽ tự động được lưu dưới dạng String trong MongoDB
+
     int age;
-    @Column(name = "bmi")
     Double bmi;
-
-    @Column(name = "bmr")
     Double bmr;
-
-    @Column(name = "weight")
     Double weight;
-
-    @Column(name = "height")
     Double height;
-
-    @Column(name = "meal_per_day")
     int mealPerDay;
 
-    @OneToOne()
-    @JoinColumn(name = "user_id")
+    @DBRef // Tham chiếu đến document User
     User user;
 
-    @OneToOne()
+    @DBRef // Tham chiếu đến document WeighPlan
     WeighPlan weighPlan;
-
 }

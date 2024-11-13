@@ -1,30 +1,27 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
-@Entity
-@Table(name = "`group`")
+@Document(collection = "groups")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class Group extends AbstractEntity <Long>{
+public class Group extends AbstractEntity<String> { // ID chuyển sang String cho MongoDB
     String name;
     String description;
     int kind;
 
-    @OneToMany(mappedBy = "group")
+    @DBRef // Tham chiếu đến danh sách document GroupHasUser
     List<GroupHasUser> groupHasUsers;
 
-    @OneToMany(mappedBy = "group")
+    @DBRef // Tham chiếu đến danh sách document GroupHasPermission
     List<GroupHasPermission> groupHasPermissions;
 }

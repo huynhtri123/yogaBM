@@ -19,7 +19,7 @@ public class CartItemServiceImpl implements CartItemService {
     CartItemRepository cartItemRepository;
     @Override
     public CartItem findCartItemById(String id){
-        Optional<CartItem> itemOptional =  cartItemRepository.findById(Long.valueOf(id));
+        Optional<CartItem> itemOptional =  cartItemRepository.findById(id);
          if(itemOptional.isEmpty()){
              throw new AppException(ErrorCode.CART_ITEM_NOT_FOUND);
          }

@@ -1,6 +1,5 @@
 package org.example.yogabusinessmanagementweb.common.mapper;
 
-import jakarta.persistence.ManyToOne;
 import org.example.yogabusinessmanagementweb.common.entities.SubCategory;
 import org.example.yogabusinessmanagementweb.dto.request.subcategory.SubCategoryCreationRequest;
 import org.mapstruct.Mapper;

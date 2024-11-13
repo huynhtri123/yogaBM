@@ -1,53 +1,43 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.yogabusinessmanagementweb.common.Enum.EStatusOrder;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "Orders")
+@Document(collection = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class Order extends AbstractEntity<Long> implements Serializable {
-    @Column(name = "deliveryDate")
+public class Order extends AbstractEntity<String> implements Serializable {
     Date deliveryDate;
-
-    @Column(name = "total_price")
     BigDecimal totalPrice;
-
-    @Column(name = "total_item")
     int totalItem;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_order")
+    // Lưu trực tiếp enum dưới dạng String
     EStatusOrder eStatusOrder;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "payment_id")
+    @DBRef
     private Payment payment;
 
-    @Column(name = "order_date")
     Date orderDate;
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id")
+    @DBRef
     User user;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
+    @DBRef
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
+    @DBRef
     List<OrderItem> orderItems;
 }
+

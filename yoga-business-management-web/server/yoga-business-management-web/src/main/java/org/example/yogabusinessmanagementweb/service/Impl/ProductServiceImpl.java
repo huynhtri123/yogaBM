@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public Product getProductById(String id) {
-        return productRepository.findProductById(Long.valueOf(id))
+        return productRepository.findProductById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
     }
     @Override
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean delete(String id) {
         try {
-            Optional<Product> product = productRepository.findById(Long.valueOf(id));
+            Optional<Product> product = productRepository.findById(id);
             if (product.isPresent()) {
                 Product productEntity = product.get();
                 productRepository.deleteById(productEntity.getId());

@@ -1,33 +1,27 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Entity
-@Table(name = "Cart")
+@Document(collection = "carts")
 @NoArgsConstructor
-
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class Cart extends AbstractEntity<Long>{
+public class Cart extends AbstractEntity<String> { // ID chuyển sang String cho MongoDB
     int totalItem;
     BigDecimal totalPrice;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @DBRef // Tham chiếu đến document User
     User user;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cart_id")
+    @DBRef // Tham chiếu đến danh sách document CartItem
     List<CartItem> cartItems;
-
-
 }

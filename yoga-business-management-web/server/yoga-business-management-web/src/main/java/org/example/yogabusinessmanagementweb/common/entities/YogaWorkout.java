@@ -1,25 +1,22 @@
 package org.example.yogabusinessmanagementweb.common.entities;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.print.attribute.standard.Media;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "YogaWorkout")
+@Document(collection = "yogaworkout") // MongoDB collection name
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class YogaWorkout extends AbstractEntity<Long>  implements Serializable {
+public class YogaWorkout extends AbstractEntity<String> implements Serializable { // ID type is typically String in MongoDB
+
     String name;
     String description;
     int duration;
@@ -28,6 +25,12 @@ public class YogaWorkout extends AbstractEntity<Long>  implements Serializable {
     Integer level;
     String videoPath;
 
-    @OneToMany(mappedBy = "yogaWorkout")
+    // Embedding the UserHasYogaWorkout directly or storing references
+    // Option 1: Embedding (if you want to include related data within YogaWorkout)
+    @Field("user_has_yoga_workouts")
     List<UserHasYogaWorkout> yogaWorkouts;
+
+    // Option 2: Referencing (if you just want to store the references/IDs to UserHasYogaWorkout)
+    // @DBRef("user_has_yoga_workouts")
+    // List<UserHasYogaWorkout> yogaWorkouts;
 }

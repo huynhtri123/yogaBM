@@ -1,40 +1,32 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.example.yogabusinessmanagementweb.common.Enum.EStatusOrder;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "OrderItem")
+@Document(collection = "orderItems")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class OrderItem extends AbstractEntity<Long> implements Serializable {
-    @Column(name = "title")
-    String title;
+public class OrderItem extends AbstractEntity<String> implements Serializable { // ID đổi sang String cho MongoDB
 
-    @Column(name = "quantity")
+    String title;  // Sử dụng chuỗi thay vì @Column(name = "title")
     int quantity;
 
-    @OneToOne()
-    @JoinColumn(name = "rating_id")
+    @DBRef // Tham chiếu đến Rating document trong MongoDB
     Rating rating;
 
-    @Column(name = "order_status")
-    @Enumerated(EnumType.STRING) // Store enum as a string in the database
-    EStatusOrder orderStatus;
+    EStatusOrder orderStatus;  // MongoDB sẽ lưu enum dưới dạng chuỗi
 
-    @Column(name = "total_price")
     Long totalPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
+    @DBRef // Tham chiếu đến Product document trong MongoDB
     Product product;
-
 }

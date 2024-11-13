@@ -1,6 +1,5 @@
 package org.example.yogabusinessmanagementweb.dto.response.product;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

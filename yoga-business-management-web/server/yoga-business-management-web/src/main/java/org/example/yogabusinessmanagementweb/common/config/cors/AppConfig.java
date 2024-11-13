@@ -13,7 +13,6 @@ import org.example.yogabusinessmanagementweb.common.entities.User;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -33,29 +32,24 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
-@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AppConfig {
 
     UserService userService;
     PreFilter preFilter;
     CustomAccessDeniedHandler accessDeniedHandler;
     @Bean
-    public AuditorAwareImpl auditorProvider() {
-        return new AuditorAwareImpl();
-    }
-    @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository) {
-      return args -> {
-          if(userRepository.findByUsername("admin").isEmpty()){
-              User user = User.builder()
-                      .username("admin")
-                      .password(getPasswordEncoder().encode("admin"))
-                      .roles(ERole.ADMIN.name())
-                      .status(true)
-                      .build();
-              userRepository.   save(user);
-          }
-      };
+        return args -> {
+            if (userRepository.findByUsername("admin").isEmpty()) {
+                User user = User.builder()
+                        .username("admin")
+                        .password(getPasswordEncoder().encode("admin"))
+                        .roles(ERole.ADMIN.name())
+                        .status(true)
+                        .build();
+                userRepository.save(user);
+            }
+        };
     }
 
     private String[] WHITE_LIST = {"/api/auth/**","/test"};

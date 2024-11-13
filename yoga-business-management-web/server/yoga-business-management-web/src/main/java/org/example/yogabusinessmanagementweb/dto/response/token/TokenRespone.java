@@ -13,5 +13,5 @@ import java.io.Serializable;
 public class TokenRespone implements Serializable {
     private String accesstoken;
     private String refreshtoken;
-    private long userid;
+    private String userid;
 }

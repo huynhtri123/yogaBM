@@ -1,61 +1,74 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.yogabusinessmanagementweb.common.Enum.ERole;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.management.relation.Role;
-import javax.print.attribute.standard.Media;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "users")
+@Document(collection = "users") // MongoDB collection for User
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class User extends AbstractEntity<Long>  implements UserDetails, Serializable {
+public class User extends AbstractEntity<String> implements UserDetails, Serializable { // ID changed to String for MongoDB
+
+    @Field("username")
     String username;
+
+    @Field("password")
     String password;
+
+    @Field("phone")
     String phone;
+
+    @Field("gender")
     String gender;
+
+    @Field("email")
     String email;
+
+    @Field("fullname")
     String fullname;
+
+    @Field("dateOfBirth")
     Date dateOfBirth;
+
+    @Field("imagePath")
     String imagePath;
+
+    @Field("roles")
     String roles;
+
+    @Field("status")
     boolean status;
 
-    // User quản lý Address, một chiều
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    // MongoDB doesn't support OneToMany relationships the same way, so you store the user addresses with DBRef (similar to foreign key)
+    @DBRef
     List<Address> addresses;
 
-    @OneToMany(mappedBy = "user")
+    // GroupHasUser will also be stored in MongoDB as embedded documents, not as a relational join
+    @DBRef
     List<GroupHasUser> groupHasUsers;
 
-    @OneToOne()
+    @DBRef
     Wishlist wishlist;
 
-    @OneToOne
+    @DBRef
     Token token;
 
-    @OneToMany()
+    @DBRef
     List<UserHasYogaWorkout> yogaWorkouts;
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -77,9 +90,8 @@ public class User extends AbstractEntity<Long>  implements UserDetails, Serializ
         return true;
     }
 
-    // Phương thức getAuthorities duy nhất
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles)); // Chuyển đổi Role thành GrantedAuthority
+        return List.of(new SimpleGrantedAuthority(roles)); // Convert role to GrantedAuthority for MongoDB
     }
 }

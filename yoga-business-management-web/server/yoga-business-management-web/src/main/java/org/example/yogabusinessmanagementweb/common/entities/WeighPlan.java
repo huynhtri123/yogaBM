@@ -1,23 +1,24 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "WeighPlan")
+@Document(collection = "weighPlan") // MongoDB collection name
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class WeighPlan extends AbstractEntity<Long>  implements Serializable {
-    @Column(name = "name")
+public class WeighPlan extends AbstractEntity<String> implements Serializable { // ID changed to String for MongoDB
+
+    @Field("name")
     String name;
 
-    @Column(name = "description")
+    @Field("description")
     String description;
 }

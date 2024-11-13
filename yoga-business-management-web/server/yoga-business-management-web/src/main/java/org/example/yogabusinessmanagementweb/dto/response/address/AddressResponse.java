@@ -1,7 +1,5 @@
 package org.example.yogabusinessmanagementweb.dto.response.address;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

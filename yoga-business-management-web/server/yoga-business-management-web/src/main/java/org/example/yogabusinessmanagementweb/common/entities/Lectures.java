@@ -1,22 +1,21 @@
 package org.example.yogabusinessmanagementweb.common.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "Lectures")
+@Document(collection = "lectures")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class Lectures  extends AbstractEntity<Long>{
+public class Lectures extends AbstractEntity<String> { // ID chuyển sang String cho MongoDB
+
     String title;
     String content;
     String videoPath;
-    String duration;//phút
+    String duration; // phút
     String image;
 }
